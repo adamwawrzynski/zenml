@@ -67,6 +67,7 @@ from zenml.integrations.tensorflow import TensorflowIntegration  # noqa
 from zenml.integrations.wandb import WandbIntegration  # noqa
 from zenml.integrations.whylogs import WhylogsIntegration  # noqa
 from zenml.integrations.xgboost import XgboostIntegration  # noqa
+from zenml.integrations.ssh import SSHIntegration
 
 if sys.version_info > (3, 7):
     # from zenml.integrations.llama_index import LlamaIndexIntegration  # noqa
