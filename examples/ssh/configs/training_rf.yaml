@@ -1,0 +1,44 @@
+# environment configuration
+settings:
+  docker:
+    required_integrations:
+      - sklearn
+    requirements:
+      - pyarrow
+
+# configuration of the Model Control Plane
+model_version:
+  name: breast_cancer_classifier
+  version: rf
+  license: Apache 2.0
+  description: A breast cancer classifier
+  tags: ["breast_cancer", "classifier"]
+
+# Configure the pipeline
+parameters:
+  model_type: "rf"  # Choose between rf/sgd
+
+steps:
+  model_trainer:
+    step_operator: "ssh_step"
+    enable_cache: False
+    settings:
+      step_operator.ssh:
+        username: "root"
+        port: 9816
+        ip_address: "12.104.212.10"
+        requirements: [
+            "zenml[server]==0.54.1",
+            "notebook",
+            "scikit-learn<1.3",
+            "pyarrow",
+            "fabric",
+        ]
+        connect_kwargs: 
+          "key_filename": "/home/user/.ssh/id_rsa"
+        zenml_server_url: "https://adam-wawrzynski-zenml-server-54-1.hf.space"
+        zenml_server_username: "default"
+        zenml_server_password: "''"
+        stack_name: "ssh_stack"
+        integrations: ["gcp"]
+        code_directory: "examples/quickstart"

@@ -11,29 +11,19 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 #  or implied. See the License for the specific language governing
 #  permissions and limitations under the License.
-"""Entrypoint configuration for ZenML Sagemaker step operator."""
+"""Entrypoint configuration for ZenML SSH step operator."""
 
 from zenml.step_operators.step_operator_entrypoint_configuration import (
     StepOperatorEntrypointConfiguration,
 )
-from zenml.utils.env_utils import reconstruct_environment_variables
-
-SSH_ESTIMATOR_STEP_ENV_VAR_SIZE_LIMIT = 512
-
 
 class SSHEntrypointConfiguration(StepOperatorEntrypointConfiguration):
-    """Entrypoint configuration for ZenML Sagemaker step operator.
+    """Entrypoint configuration for ZenML SSH step operator.
 
-    The only purpose of this entrypoint configuration is to reconstruct the
-    environment variables that exceed the maximum length of 512 characters
-    allowed for Sagemaker Estimator steps from their individual components.
     """
 
     def run(self) -> None:
         """Runs the step."""
-        # Reconstruct the environment variables that exceed the maximum length
-        # of 512 characters from their individual chunks
-        reconstruct_environment_variables()
 
         # Run the step
         super().run()

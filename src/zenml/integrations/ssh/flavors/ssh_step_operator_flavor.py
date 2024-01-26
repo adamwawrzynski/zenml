@@ -11,9 +11,9 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 #  or implied. See the License for the specific language governing
 #  permissions and limitations under the License.
-"""Amazon SageMaker step operator flavor."""
+"""SSH step operator flavor."""
 
-from typing import TYPE_CHECKING, Optional, Type
+from typing import TYPE_CHECKING, Optional, Type, Dict, Any, List
 
 from zenml.config.base_settings import BaseSettings
 from zenml.integrations.ssh import (
@@ -29,30 +29,29 @@ if TYPE_CHECKING:
 
 
 class SSHStepOperatorSettings(BaseSettings):
-    """Settings for the Sagemaker step operator.
+    """Settings for the SSH step operator.
 
     Attributes:
 
-
     """
-
-    user: Optional[str] = None
-    password: Optional[str] = None
-    port: Optional[int] = None
-    ip_address: Optional[str] = None
+    zenml_server_url: Optional[str]
+    zenml_server_username: Optional[str]
+    zenml_server_password: Optional[str]
+    stack_name: Optional[str]
+    username: Optional[str]
+    port: Optional[int]
+    ip_address: Optional[str]
+    requirements: List[str] = []
+    integrations: List[str] = []
+    connect_kwargs: Dict[str, Any] = {}
+    use_virtualenv: bool = False
+    virtualenv_path: Optional[str] = None
 
 
 class SSHStepOperatorConfig(  # type: ignore[misc] # https://github.com/pydantic/pydantic/issues/4173
     BaseStepOperatorConfig, SSHStepOperatorSettings
 ):
-    """Config for the Sagemaker step operator.
-
-    Attributes:
-        role: The role that has to be assigned to the jobs which are
-            running in Sagemaker.
-        bucket: Name of the S3 bucket to use for storing artifacts
-            from the job run. If not provided, a default bucket will be created
-            based on the following format: "sagemaker-{region}-{aws-account-id}".
+    """Config for the SSH step operator.
     """
 
 
@@ -82,21 +81,6 @@ class SSHStepOperatorFlavor(BaseStepOperatorFlavor):
         """
         return SSH_STEP_OPERATOR_FLAVOR
 
-    # @property
-    # def service_connector_requirements(
-    #     self,
-    # ) -> Optional[ServiceConnectorRequirements]:
-    #     """Service connector resource requirements for service connectors.
-
-    #     Specifies resource requirements that are used to filter the available
-    #     service connector types that are compatible with this flavor.
-
-    #     Returns:
-    #         Requirements for compatible service connectors, if a service
-    #         connector is required for this flavor.
-    #     """
-    #     return ServiceConnectorRequirements(resource_type=AWS_RESOURCE_TYPE)
-    
     @property
     def docs_url(self) -> Optional[str]:
         """A url to point at docs explaining this flavor.
